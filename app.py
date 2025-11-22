@@ -155,11 +155,16 @@ print(X_train.columns.tolist())
 import streamlit as st
 import pandas as pd
 import pickle
+import os
 
 # Load the trained model
 @st.cache_resource
 def load_model():
-    with open('length_of_stay_model.pkl', 'rb') as file:
+    model_path = 'length_of_stay_model.pkl'
+    if not os.path.exists(model_path):
+        st.error(f"Model file '{model_path}' not found. Please upload the model file to your repository.")
+        st.stop()
+    with open(model_path, 'rb') as file:
         return pickle.load(file)
 
 model = load_model()
